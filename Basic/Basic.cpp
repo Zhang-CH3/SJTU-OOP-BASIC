@@ -76,7 +76,7 @@ void processLine(string line, Program & program, EvalState & state) {
     }
     else if (scanner.hasMoreTokens()) {
         if(Tok=="LET" || Tok=="INPUT" || Tok=="PRINT"){
-            stmt = parseState(line);
+            stmt = parseState(line, 0);
             stmt->execute(state);
             delete stmt;
         }
