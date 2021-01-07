@@ -129,8 +129,6 @@ Statement *parseState(string line) {
     } else error("SYNTAX ERROR");
 }
 
-void Rem::execute(EvalState &state) {/*...*/}
-
 Let::Let(TokenScanner &scanner) {
     exp = parseExp(scanner);
     if (exp->getType()!=COMPOUND || ((CompoundExp*)exp)->getOp()!="=") error("SYNTAX ERROR");
@@ -199,9 +197,7 @@ void Print::execute(EvalState &state) {
     cout << exp->eval(state) << endl;
 }
 
-void End::execute(EvalState &state) {
-    throw LineState(0);
-}
+
 
 Goto::Goto(int Num) {
     lineNumber = Num;
@@ -217,6 +213,12 @@ Rem::Rem() {}
 
 Rem::~Rem() {}
 
+void Rem::execute(EvalState &state) {/*...*/}
+
 End::End() {}
 
 End::~End() {}
+
+void End::execute(EvalState &state) {
+    throw LineState(0);
+}
