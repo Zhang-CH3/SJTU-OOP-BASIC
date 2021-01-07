@@ -25,7 +25,7 @@ Program::~Program() {
 }
 
 void Program::clear() {
-    for(auto it = mapProgram.begin(); it < mapProgram.end();it++){
+    for(auto it = mapProgram.begin(); it != mapProgram.end();it++){
         delete it->second.stmt;
     }
     mapProgram.clear();
