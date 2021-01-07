@@ -35,14 +35,26 @@ void Program::clear() {
 
 void Program::addSourceLine(int lineNumber, string line) {
     if (mapProgram.count(lineNumber)) {
-        Statement *temp = parseState(line);
+        Statement *temp;
+        try{
+            tmp = parseState(line);
+        } catch(ErrorException error){
+            if(tmp != nullptr)delete tmp;
+            throw error;
+        }
         delete mapProgram[lineNumber].stmt;
         mapProgram[lineNumber].line=line;
         setParsedStatement(lineNumber, temp);
     } else {
-        if (lineNumber <= 0) error("LINE NUMBER ERROR");
-        mapProgram[lineNumber].line = line;
-        setParsedStatement(lineNumber, parseState(line));
+        try {
+            if (lineNumber <= 0) error("LINE NUMBER ERROR");
+            mapProgram[lineNumber].line = line;
+            setParsedStatement(lineNumber, parseState(line));
+        } catch(ErrorException error){
+            cout << error.getMessage() << endl;
+            delete mapProgram[LineNumber].stmt;
+            mapProgram.erase(lineNumber);
+        }
     }
 }
 
