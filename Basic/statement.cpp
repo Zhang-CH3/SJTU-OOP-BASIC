@@ -22,98 +22,6 @@ Statement::~Statement() {
     /* Empty */
 }
 
-Let::Let(TokenScanner &scanner) {
-    exp = parseExp(scanner);
-    if (exp->getType()!=COMPOUND || ((CompoundExp*)exp)->getOp()!="=") error("SYNTAX ERROR");
-}
-
-Let::~Let() {
-    if(exp != nullptr)delete exp;
-}
-
-void Let::execute(EvalState &state) {
-    exp->eval(state);
-}
-
-If::If(Expression *exp_1, string cmp_, Expression *exp_2, int line_num) {
-    e1 = exp_1;
-    e2 = exp_2;
-    cmp = cmp_;
-    gotoNum = line_num;
-}
-
-If::~If() {
-    delete e1;
-    delete e2;
-}
-
-void If::execute(EvalState &state) {
-    int diff = e1->eval(state) - e2->eval(state);
-    bool hitoshi = (cmp == "=" && diff == 0);
-    bool ijo = (cmp == ">" && diff > 0);
-    bool miman = (cmp == "<" && diff < 0);
-    if(hitoshi || ijo || miman)throw LineState(1, gotoNum);
-    else throw LineState(2, 0);
-}
-
-Input::Input(Expression *e) {
-    exp = e;
-}
-
-Input::~Input() {
-    delete exp;
-}
-
-void Input::execute(EvalState &state) {
-    int vari;
-    while (true) {
-        try {
-            vari = stoi(getLine(" ? "));
-        } catch (...) {
-            cout<<"INVALID NUMBER"<<endl;
-            continue;
-        }
-        break;
-    }
-    state.setValue(((IdentifierExp *) exp)->getName(), vari);
-}
-
-Print::Print(Expression *e) {
-    exp = e;
-}
-
-Print::~Print() {
-    delete exp;
-}
-
-void Print::execute(EvalState &state) {
-    cout << exp->eval(state) << endl;
-}
-
-Goto::Goto(int Num) {
-    lineNumber = Num;
-}
-
-Goto::~Goto() {}
-
-void Goto::execute(EvalState &state) {
-    throw LineState(1, lineNumber);
-}
-
-Rem::Rem() {}
-
-Rem::~Rem() {}
-
-void Rem::execute(EvalState &state) {return;}
-
-End::End() {}
-
-End::~End() {}
-
-void End::execute(EvalState &state) {
-    throw LineState(0);
-}
-
 Statement *parseState(string line) {
     TokenScanner scanner;
     scanner.ignoreWhitespace();
@@ -168,7 +76,7 @@ Statement *parseState(string line) {
             tmp = scanner.nextToken();
             int lineNum;
             try {
-                lineNum = stoi(tmp);
+                lineNum = stringToInteger(tmp);
             } catch (...) {
                 delete e1;
                 delete e2;
@@ -199,7 +107,7 @@ Statement *parseState(string line) {
             e1=parseExp(scanner);
             scanner.setInput(s2);
             e2=parseExp(scanner);
-            int lineNum=stoi(Tok);
+            int lineNum=stringToInteger(Tok);
             return new If(e1,"=",e2,lineNum);
         }
     } else if (first_Tok == "GOTO") {
@@ -207,7 +115,7 @@ Statement *parseState(string line) {
         int lineNumber;
         if (scanner.hasMoreTokens()) error("SYNTAX ERROR");
         try {
-            lineNumber = stoi(s);
+            lineNumber = stringToInteger(s);
         } catch (...) {
             error("SYNTAX ERROR");
         }
@@ -220,3 +128,95 @@ Statement *parseState(string line) {
         return new End;
     } else error("SYNTAX ERROR");
 }
+
+void Rem::execute(EvalState &state) {/*...*/}
+
+Let::Let(TokenScanner &scanner) {
+    exp = parseExp(scanner);
+    if (exp->getType()!=COMPOUND || ((CompoundExp*)exp)->getOp()!="=") error("SYNTAX ERROR");
+}
+
+Let::~Let() {
+    if(exp != nullptr)delete exp;
+}
+
+void Let::execute(EvalState &state) {
+    exp->eval(state);
+}
+
+If::If(Expression *exp_1, string cmp_, Expression *exp_2, int line_num) {
+    e1 = exp_1;
+    e2 = exp_2;
+    cmp = cmp_;
+    gotoNum = line_num;
+}
+
+If::~If() {
+    delete e1;
+    delete e2;
+}
+
+void If::execute(EvalState &state) {
+    int diff = e1->eval(state) - e2->eval(state);
+    bool hitoshi = (cmp == "=" && diff == 0);
+    bool ijo = (cmp == ">" && diff > 0);
+    bool miman = (cmp == "<" && diff < 0);
+    if(hitoshi || ijo || miman)throw LineState(1, gotoNum);
+    else throw LineState(2, 0);
+}
+
+Input::Input(Expression *e) {
+    exp = e;
+}
+
+Input::~Input() {
+    delete exp;
+}
+
+void Input::execute(EvalState &state) {
+    int vari;
+    while (true) {
+        try {
+            vari = stringToInteger(getLine(" ? "));
+        } catch (...) {
+            cout<<"INVALID NUMBER"<<endl;
+            continue;
+        }
+        break;
+    }
+    state.setValue(((IdentifierExp *) exp)->getName(), vari);
+}
+
+Print::Print(Expression *e) {
+    exp = e;
+}
+
+Print::~Print() {
+    delete exp;
+}
+
+void Print::execute(EvalState &state) {
+    cout << exp->eval(state) << endl;
+}
+
+void End::execute(EvalState &state) {
+    throw LineState(0);
+}
+
+Goto::Goto(int Num) {
+    lineNumber = Num;
+}
+
+Goto::~Goto() {}
+
+void Goto::execute(EvalState &state) {
+    throw LineState(1, lineNumber);
+}
+
+Rem::Rem() {}
+
+Rem::~Rem() {}
+
+End::End() {}
+
+End::~End() {}
