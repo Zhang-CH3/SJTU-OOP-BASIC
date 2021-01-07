@@ -93,12 +93,12 @@ Statement *parseState(string line) {
             while (scanner.hasMoreTokens()){
                 Tok=scanner.nextToken();
                 if (Tok=="=") break;
-                s1+=Tok;
+                s1+=Tok + ' ';
             }
             while (scanner.hasMoreTokens()){
                 Tok=scanner.nextToken();
                 if (Tok=="THEN") break;
-                s2+=Tok;
+                s2+=Tok + ' ';
             }//Read till '=' or 'THEN' appears
             if (scanner.hasMoreTokens())
                 Tok=scanner.nextToken();
