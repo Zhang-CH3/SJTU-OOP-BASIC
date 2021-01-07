@@ -75,12 +75,10 @@ void processLine(string line, Program & program, EvalState & state) {
         }
     }
     else if (scanner.hasMoreTokens()) {
-        if(Tok=="LET" || Tok=="INPUT" || Tok=="PRINT"){
-            stmt = parseState(line);
-            stmt->execute(state);
-            delete stmt;
-        }
-        else error("SYNTAX ERROR\n");
+        if(!(Tok=="LET" || Tok=="INPUT" || Tok=="PRINT")) error("SYNTAX ERROR\n");
+        stmt = parseState(line);
+        stmt->execute(state);
+        delete stmt;
     }
     else {
         if(Tok == "RUN")program.read(state);
