@@ -113,12 +113,13 @@ Statement *parseState(string line) {
     } else if (first_Tok == "GOTO") {
         string s = scanner.nextToken();
         if (scanner.hasMoreTokens()) error("SYNTAX ERROR");
+        int lineNum;
         try {
-            int lineNumber = stringToInteger(s);
+            lineNum = stringToInteger(s);
         } catch (...) {
             error("SYNTAX ERROR");
         }
-        return new Goto(lineNumber);
+        return new Goto(lineNum);
     } else if (first_Tok == "REM") {
         //REM
         return new Rem;
