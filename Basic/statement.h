@@ -87,7 +87,7 @@ public:
     LineState(int t,int num=0):
         type(t),lineNum(num){}
 };
-Statement *parseState(string line, bool plus);
+Statement *parseState(string line);
 
 class Rem : public Statement {
 public:
