@@ -37,7 +37,7 @@ void Program::addSourceLine(int lineNumber, string line) {
     if (mapProgram.count(lineNumber)) {
         Statement *temp;
         try{
-            temp = parseState(line, 0);
+            temp = parseState(line);
         } catch(ErrorException error){
             if(temp != nullptr)delete temp;
             throw error;
@@ -49,7 +49,7 @@ void Program::addSourceLine(int lineNumber, string line) {
         try {
             if (lineNumber <= 0) error("LINE NUMBER ERROR");
             mapProgram[lineNumber].line = line;
-            setParsedStatement(lineNumber, parseState(line, 0));
+            setParsedStatement(lineNumber, parseState(line));
         } catch(ErrorException error){
             cout << error.getMessage() << endl;
             delete mapProgram[lineNumber].stmt;
