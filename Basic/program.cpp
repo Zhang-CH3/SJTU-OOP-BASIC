@@ -25,10 +25,8 @@ Program::~Program() {
 }
 
 void Program::clear() {
-    auto it = mapProgram.begin();
-    while (it != mapProgram.end()) {
+    for(auto it = mapProgram.begin(); it < mapProgram.end();it++){
         delete it->second.stmt;
-        ++it;
     }
     mapProgram.clear();
 }
@@ -36,6 +34,7 @@ void Program::clear() {
 void Program::addSourceLine(int lineNumber, string line) {
     if (mapProgram.count(lineNumber)) {
         Statement *temp;
+        temp = nullptr;
         try{
             temp = parseState(line);
         } catch(ErrorException error){
