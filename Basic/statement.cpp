@@ -68,7 +68,7 @@ Statement *parseState(string line) {
         }
     } else if (first_Tok == "IF") {
         //IF_THEN
-        if (line.find("=") == -1u) {
+        if (line.find("=") == string::npos) {
             e1 = readE(scanner);
             string cmp = scanner.nextToken();
             e2 = readE(scanner);
