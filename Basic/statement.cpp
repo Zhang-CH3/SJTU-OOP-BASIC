@@ -112,10 +112,9 @@ Statement *parseState(string line) {
         }
     } else if (first_Tok == "GOTO") {
         string s = scanner.nextToken();
-        int lineNumber;
         if (scanner.hasMoreTokens()) error("SYNTAX ERROR");
         try {
-            lineNumber = stringToInteger(s);
+            int lineNumber = stringToInteger(s);
         } catch (...) {
             error("SYNTAX ERROR");
         }
@@ -213,7 +212,7 @@ Rem::Rem() {}
 
 Rem::~Rem() {}
 
-void Rem::execute(EvalState &state) {/*...*/}
+void Rem::execute(EvalState &state) {}
 
 End::End() {}
 
