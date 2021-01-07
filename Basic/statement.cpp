@@ -22,7 +22,7 @@ Statement::~Statement() {
     /* Empty */
 }
 
-Statement *parseState(string line) {
+Statement *parseState(string line, bool plus) {
     TokenScanner scanner;
     scanner.ignoreWhitespace();
     scanner.scanNumbers();
@@ -30,7 +30,7 @@ Statement *parseState(string line) {
     string first_Tok, Tok;
     Statement *stmt = nullptr;
     Expression *exp = nullptr, *e1, *e2;
-    first_Tok = scanner.nextToken();
+    if(plus) first_Tok = scanner.nextToken();
     //LET
     if (first_Tok == "LET") {
         try {
