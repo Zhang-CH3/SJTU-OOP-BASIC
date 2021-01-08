@@ -22,7 +22,7 @@ Statement::~Statement() {
     /* Empty */
 }
 
-Statement *parseState(string line) {
+Statement *interpret(string line) {
     TokenScanner scanner;
     scanner.ignoreWhitespace();
     scanner.scanNumbers();
