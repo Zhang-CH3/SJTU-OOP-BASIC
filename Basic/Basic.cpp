@@ -76,7 +76,7 @@ void processLine(string line, Program & program, EvalState & state) {
     }
     else if (scanner.hasMoreTokens()) {
         if(!(Tok=="LET" || Tok=="INPUT" || Tok=="PRINT")) error("SYNTAX ERROR\n");
-        stmt = parseState(line);
+        stmt = interpret(line);
         stmt->execute(state);
         delete stmt;
     }
@@ -87,7 +87,7 @@ void processLine(string line, Program & program, EvalState & state) {
         else if(Tok == "QUIT")exit(0);
         else if(Tok == "LIST"){
             int num = program.getFirstLineNumber();
-            while (num != 2e9) {
+            while (num != 1e9) {
                 cout << program.getSourceLine(num) << '\n';
                 num = program.getNextLineNumber(num);
             }
