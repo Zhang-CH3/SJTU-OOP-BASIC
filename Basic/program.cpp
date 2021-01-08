@@ -80,20 +80,20 @@ Statement *Program::getParsedStatement(int lineNumber) {
 }
 
 int Program::getFirstLineNumber() {
-    if (mapProgram.empty()) return 2e9;
+    if (mapProgram.empty()) return 1e9;
     return mapProgram.begin()->first;
 }
 
 int Program::getNextLineNumber(int lineNumber) {
     auto it = mapProgram.find(lineNumber);
     it++;
-    if (it == mapProgram.end()) return 2e9;
+    if (it == mapProgram.end()) return 1e9;
     return it->first;
 }
 
 void Program::read(EvalState &state) {
     int num = getFirstLineNumber();
-    while (num != 2e9) {
+    while (num != 1e9) {
         try {
             getParsedStatement(num)->execute(state);
         } catch (LineState Class) {
